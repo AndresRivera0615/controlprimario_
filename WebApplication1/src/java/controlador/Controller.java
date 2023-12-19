@@ -9,6 +9,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,10 +27,10 @@ import org.xml.sax.SAXException;
  * @author andre
  */
 public class Controller {
-
     public static String Pintarusuarios() {
         String tabla = "";
-        String lot = "";
+        
+       String lot ="";
         try {
 
             //conectar al API
@@ -55,7 +56,7 @@ public class Controller {
                 /*-----------------------------------*/
                 //mostrar la informacion del API               
 
-                System.out.println("INFORMACION SERVICIO" + informacion);
+//                System.out.println("INFORMACION SERVICIO" + informacion);
 
                 String cadenaXml = informacion.toString();
                 
@@ -79,42 +80,48 @@ public class Controller {
                     String cod_persona = xpath.evaluate(codpersona, documentoXml);
                     String documento = xpath.evaluate(documentoU, documentoXml);
                     
-                    System.out.println("id_lote" + id_lote);
-                    System.out.println("cod_transaccion" + cod_transaccion);
-                    System.out.println("estado" + estado);
-                    System.out.println("fecha_procesamiento" + fecha_procesamiento);
-                    System.out.println("cod_persona" + cod_persona);
-                    System.out.println("documento" + documento);
+//                    System.out.println("id_lote" + id_lote);
+//                    System.out.println("cod_transaccion" + cod_transaccion);
+//                    System.out.println("estado" + estado);
+//                    System.out.println("fecha_procesamiento" + fecha_procesamiento);
+//                    System.out.println("cod_persona" + cod_persona);
+//                    System.out.println("documento" + documento);
                     String[] lote = id_lote.split(",");
+//                     System.out.println("INFOR LOTE SPLIT");
+//                    System.out.println(Arrays.toString(lote));
                     String[] usuario = cod_persona.split(",");
                     
-                    tabla = tabla + "<thead>\n" +
-"                                        <tr>\n" +
-"                                            <th>Id lote</th>\n" +
-"                                            <th>Usuario</th>\n" +
-"                                            <th>Documento</th>\n" +
-"                                            <th>Fecha EjcuciÃ³n</th>\n" +
-"                                            <th>Estado</th>\n" +
-"                                            <th>Sincronizar</th>\n" +
-"                                        </tr>\n" +
-"                                    </thead>";
+//                    tabla = tabla + "<thead>\n" +
+//"                                        <tr>\n" +
+//"                                            <th>Id lote</th>\n" +
+//"                                            <th>Usuario</th>\n" +
+//"                                            <th>Documento</th>\n" +
+//"                                            <th>Fecha Ejcucion</th>\n" +
+//"                                            <th>Estado</th>\n" +
+//"                                            <th>Sincronizar</th>\n" +
+//"                                        </tr>\n" +
+//"                                    </thead>";
                     tabla = tabla + "<tr>";
                     System.out.println("<tr> ");
                     for (int i = 0; i < lote.length; i++) {
                         
-                        tabla = tabla + "<tr><td>"+ lote[i] +"</td>";
-                        System.out.println("<td> " + lote[i] + "</td>");
+                        lot = lot + ""+ lote[i] +"";
+//                        System.out.println("<tr><td>" + lote[i] + "</td>");
+                        return lot;
                     }
-//                    tabla = tabla + "</tr>";
-//                    tabla = tabla + "<tr>";
+//                    tabla = tabla + "<td>informacion</td>";
+//                    tabla = tabla + "<td>informacion2</td>";
+//                    tabla = tabla + "";
                     for (int a = 0; a < usuario.length; a++) {
-                        tabla = tabla + "<td>"+ usuario[a] +"</td></tr>";
-                        System.out.println("<tr><td> " + usuario[a] + "</td></tr>");
+                        tabla = tabla + "<td>"+ usuario[a] +"</td>";
+//                        System.out.println("<td> " + usuario[a] + "</td>");
                     }
+                    
                      tabla = tabla + "</tr>";
                      
-                     System.out.println("TABLA " + tabla);
+//                     System.out.println("TABLA " + tabla);
                     
+                     System.out.println("LOTESEUSU " + lot);
 
 //                    
 //                            + "<td>" + id_lote + "</td>"
@@ -137,15 +144,5 @@ public class Controller {
         }
 
         return tabla;
-    }
-
-    public static String pintarMensajeError(String mensaje, String URL) {
-        String Msg = "<script "
-                + "language='javascript'>	"
-                + "alert('" + mensaje + "'); "
-                + "location.href = '" + URL + "';"
-                + "</script>";
-
-        return Msg;
     }
 }
