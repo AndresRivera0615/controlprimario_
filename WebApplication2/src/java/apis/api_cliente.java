@@ -61,10 +61,10 @@ public class api_cliente {
     public DefaultTableModel leer() {
         DefaultTableModel tabla = new DefaultTableModel();
         try {
-            String encabezado[] = {"id", "Nit", "Nombres", "Apellidos", "Direccion", "Telefono", "Nacimiento"};
+            String encabezado[] = {"Lote", "Lote", "Estado", "Fecha Ejecucion", "Usuario", "Documento", "Cod Transaccion","legado","existe"};
             tabla.setColumnIdentifiers(encabezado);
-            String datos[] = new String[7];
-            System.out.println("encabezado:" + encabezado);
+            String datos[] = new String[9];
+            System.out.println("encabezado:" + encabezado.toString());
             JSONArray arreglo = new JSONArray(get());
             for (int indice = 0; indice < arreglo.length(); indice++) {
                 JSONObject atributo = arreglo.getJSONObject(indice);
@@ -75,6 +75,8 @@ public class api_cliente {
                 datos[4] = atributo.getString("direccion");
                 datos[5] = atributo.getString("telefono");
                 datos[6] = atributo.getString("fecha_nacimiento");
+                datos[7] = atributo.getString("legado");
+                datos[8] = atributo.getString("existe");
                 tabla.addRow(datos);
             }
         } catch (JSONException ex) {

@@ -25,7 +25,7 @@ public class JavaApplication1 {
 
             //conectar al API
             System.out.println("http://100.126.18.42:8080/tesconsumo/?"+t_empleado+"&"+documento+"");
-            URL url = new URL("http://100.126.18.42:8080/tesconsumo/?"+nombre+"&"+apellido+"&"+t_empleado+"&"+documento+"&"+estado+"");
+            URL url = new URL("http://100.126.18.42:8080/Consultarusuarios");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();

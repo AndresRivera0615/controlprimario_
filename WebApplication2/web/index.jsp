@@ -18,12 +18,14 @@
         <table class="table table-striped">
     <thead>
       <tr>
-        <th>Nit</th>
-        <th>Nombres</th>
-        <th>Apellidos</th>
-        <th>Direccion</th>
-        <th>Telefono</th>
-        <th>Nacimiento</th>
+        <th>Lote</th>
+        <th>Estado</th>
+        <th>Fecha Ejecucion</th>
+        <th>Usuario</th>
+        <th>Documento</th>
+        <th>Cod Transaccion</th>
+        <th>Legado</th>
+        <th>Existe</th>
       </tr>
     </thead>
     <tbody>
@@ -39,6 +41,8 @@
             out.println("<td>"+ tabla.getValueAt(t, 4) +"</td>");
             out.println("<td>"+ tabla.getValueAt(t, 5) +"</td>");
             out.println("<td>"+ tabla.getValueAt(t, 6) +"</td>");
+            out.println("<td>"+ tabla.getValueAt(t, 7) +"</td>");
+            out.println("<td>"+ tabla.getValueAt(t, 8) +"</td>");
             out.println("</tr>");
         
         }
