@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -37,21 +37,21 @@ public class sincronizarusuario extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String nombre = request.getParameter("nombre");
-        String apellido = request.getParameter("apellido");
-        String t_empleado = request.getParameter("tipo_empleado");
+            String id_central = request.getParameter("id_central");
+        String cod_persona = request.getParameter("cod_persona");
+        String t_empleado = request.getParameter("tipo");
         String documento = request.getParameter("documento");
         String estado = request.getParameter("estado");
         
-        System.out.print("la cedula es" + nombre);
-        System.out.print("el nombre es: " + apellido);
-        System.out.print("el apellido es:" + t_empleado);
-        System.out.print("el telefono es:" + documento);
+        System.out.print("la id_central es" + id_central);
+        System.out.print("el cod_persona es: " + cod_persona);
+        System.out.print("el t_empleado es:" + t_empleado);
+        System.out.print("el documento es:" + documento);
         System.out.print("el direccion es:" + estado);
          try {
 
             //conectar al API
-            URL url = new URL("http://100.126.18.42:8080/tesconsumo/?"+t_empleado+"&"+documento+"");
+            URL url = new URL("http://100.126.18.42:8080/sincronizarusuarios/?"+t_empleado+"&"+documento+"");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();
@@ -60,6 +60,8 @@ public class sincronizarusuario extends HttpServlet {
             int responseconexion = conn.getResponseCode();
 
             if (responseconexion != 200) {
+                request.getRequestDispatcher("blank.jsp").forward(request, response);
+                controlador.Controller.modalmostrarerror();
                 throw new RuntimeException("Fallo la peticion" + responseconexion);
 
             } else {

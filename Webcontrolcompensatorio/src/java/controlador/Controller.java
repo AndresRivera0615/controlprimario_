@@ -27,14 +27,14 @@ import org.xml.sax.SAXException;
  * @author andre
  */
 public class Controller {
+
     public static String Pintarusuarios() {
         String tabla = "";
-        
-       String lot ="";
-       try {
+
+        String lot = "";
+        try {
 
             //conectar al API
-           
             URL url = new URL("http://100.126.18.42:8080/Consultarusuarios");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
@@ -52,15 +52,15 @@ public class Controller {
                 Scanner scanner = new Scanner(url.openStream());
                 while (scanner.hasNext()) {
                     informacion.append(scanner.nextLine());
-                    
+
                 }
                 scanner.close();
                 /*-----------------------------------*/
                 //mostrar la informacion del API
                 System.out.println(informacion);
-                
-                tabla = tabla +""+informacion.toString()+"";
-                
+
+                tabla = tabla + "" + informacion.toString() + "";
+
                 /*---------------*/
             }
 
@@ -71,4 +71,15 @@ public class Controller {
 
         return tabla;
     }
+
+
+
+    public static String modalmostrarerror() {
+        String Msg = "<script>\n"
+                + "alert('Fallo la peticion');\n"
+                + "</script>";
+
+        return Msg;
+    }
+
 }
