@@ -360,15 +360,23 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <p>Buscar usuario</p> <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
-                                <div class="outer">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                        
-                                        <%=Controller.Pintarusuarios()%>
+                                <table style="width:100%">
+                                    <tr>
+                                        <td></td>
+                                        <td><input type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar por documento" title="Type in a name"></td>
+                                        <td></td>
+                                        <td><input type="text" id="myInput" onkeyup="myFunction2()" placeholder="Buscar por lote" title="Type in a name"></td>
+                                    </tr>
+                                </table>
+                                     
+                                    <div class="outer">
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 
-                                        </tbody>
-                                    </table>
-                                </div>
+                                            <%=Controller.Pintarusuarios()%>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
                             </div>
                         </div>
                     </div>
@@ -481,6 +489,26 @@
             tr = table.getElementsByTagName("tr");
             for (i = 0; i < tr.length; i++) {
                 td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+     <script>
+        function myFunction2() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
                 if (td) {
                     txtValue = td.textContent || td.innerText;
                     if (txtValue.toUpperCase().indexOf(filter) > -1) {
