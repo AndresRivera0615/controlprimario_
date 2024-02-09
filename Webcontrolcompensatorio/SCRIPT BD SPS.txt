@@ -1,0 +1,131 @@
+select A.ID_LOTE, A.DOCUMENTO, A.TIPO_EMPLEADO, A.COD_PERSONA, A.LEGADO, A.EXISTE AS ODI, B.EXISTE AS CA  from CLR_COMPENSATORIO  A LEFT JOIN CLR_COMPENSATORIO_H  B ON A.DOCUMENTO = B.DOCUMENTO
+
+select * from clr_odi_ca
+
+
+
+CREATE PROCEDURE ConsultaUsuariosEjecutados
+AS
+select A.ID_LOTE, A.DOCUMENTO, A.TIPO_EMPLEADO, A.COD_PERSONA, A.LEGADO, A.EXISTE AS ODI, B.EXISTE AS CA  from CLR_COMPENSATORIO  A LEFT JOIN CLR_COMPENSATORIO_H  B ON A.DOCUMENTO = B.DOCUMENTO
+END;
+
+--------------------------------------------------------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE CONSULTA_DOCUMENTOS_USUARIOS (cursor_usuarios out SYS_REFCURSOR)
+AS
+BEGIN
+OPEN cursor_usuarios FOR
+  SELECT documento from clr_compensatorio  fetch  first 10 rows only ;
+END;
+-----------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE CONSULTA_USUARIO_X_DOCUMENTO (documentousuario in varchar2, cursor_usuarios out SYS_REFCURSOR)
+AS
+BEGIN
+OPEN cursor_usuarios FOR
+  SELECT documento, tipo_empleado, cod_persona from clr_compensatorio where documento = documentousuario;
+END;
+
+------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE CONSULTAS_X_TRANSACCION (id_transaccion integer, documentousuario in varchar2, cursor_usuarios out SYS_REFCURSOR)
+AS
+BEGIN
+  if id_transaccion = 1 then
+    OPEN cursor_usuarios FOR
+    SELECT documento, tipo_empleado, cod_persona from clr_compensatorio where documento = documentousuario;
+      else if id_transaccion = 2 then
+      OPEN cursor_usuarios FOR
+      SELECT documento, tipo_empleado, cod_persona from clr_compensatorio  fetch  first 10 rows only ;
+      end if;
+  end if;
+END;
+------------------------------------------------------------------------------------------------------------------
+BEGIN 
+DECLARE RESULTADO SYS_REFCURSOR;
+documento varchar2(50); 
+          tipo_empleado varchar2(50);
+          cod_persona varchar2(50);
+CALL CONSULTAS_X_TRANSACCION (1,'1000470622',RESULTADO);
+LOOP
+ FETCH RESULTADO 
+         into documento,tipo_empleado,cod_persona;
+         exit when RESULTADO%NOTFOUND;
+DBMS_OUTPUT.PUT_LINE (documento||','||tipo_empleado||','||cod_persona);
+         END LOOP;
+         CLOSE RESULTADO;
+END;
+/
+  
+  -- Execute the procedure
+         DECLARE
+          L_CURSOR SYS_REFCURSOR;
+          documento varchar2(50); 
+          tipo_empleado varchar2(50);
+          cod_persona varchar2(50);
+         BEGIN
+         CONSULTAS_X_TRANSACCION (1,'1000470622',cursor_usuarios => L_CURSOR);
+         LOOP
+         FETCH L_CURSOR 
+         into documento,tipo_empleado,cod_persona;
+         exit when L_CURSOR%NOTFOUND;
+         DBMS_OUTPUT.PUT_LINE (documento||','||tipo_empleado||','||cod_persona);
+         END LOOP;
+         CLOSE L_CURSOR;
+         END;
+         /
+-------------------------------------------------------------------------------------------------------------         
+         drop procedure CONSULTA_USUARIOS_EJECUTADOS;
+-------------------------------------------------------------------------------------------------------------
+
+
+create or replace FUNCTION CONSULTAS(id_consulta integer,documento varchar2)
+return varchar2
+ condicion varchar2(20);
+ begin
+   condicion:='';
+   if id_consulta = 1 then
+     condicion:= SELECT documento, tipo_empleado, cod_persona  from clr_compensatorio  fetch  first 10 rows only ;
+   else
+     if anota =2 then
+      condicion:='regular';
+     else
+      condicion:='promocionado';
+     end if;
+   end if;
+   return condicion;
+ end;
+/
+
+create or replace function f_mes(afecha date)
+   return varchar2
+ is
+  mes varchar2(20);
+ begin
+   mes:='enero';
+   case extract(month from afecha)
+     when 1 then mes:='enero';
+     when 2 then mes:='febrero';
+     when 3 then mes:='marzo';
+     when 4 then mes:='abril';
+     when 5 then mes:='mayo';
+     when 6 then mes:='junio';
+     when 7 then mes:='julio';
+     when 8 then mes:='agosto';
+     when 9 then mes:='setiembre';
+     when 10 then mes:='octubre';
+     when 11 then mes:='noviembre';
+     else mes:='diciembre';
+   end case;
+   return mes;
+ end;
+ /
+ 
+ 
+ 
+CREATE OR REPLACE FUNCTION CONSULTAS (cursor_usuarios out SYS_REFCURSOR)
+AS
+BEGIN
+OPEN cursor_usuarios FOR
+  SELECT documento, tipo_empleado, cod_persona from clr_compensatorio  fetch  first 10 rows only ;
+END;
+ 
