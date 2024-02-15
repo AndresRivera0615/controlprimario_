@@ -129,3 +129,73 @@ OPEN cursor_usuarios FOR
   SELECT documento, tipo_empleado, cod_persona from clr_compensatorio  fetch  first 10 rows only ;
 END;
  
+
+ create or replace 
+PROCEDURE CONSULTAS_X_TRANSACCION (id_transaccion integer, documentousuario in varchar2, cursor_usuarios out SYS_REFCURSOR)
+AS
+BEGIN
+  if id_transaccion = 1 then
+    OPEN cursor_usuarios FOR
+    SELECT documento, tipo_empleado, cod_persona from clr_compensatorio where documento = documentousuario;
+      else if id_transaccion = 2 then
+      OPEN cursor_usuarios FOR
+      select A.ID_LOTE, A.DOCUMENTO, A.TIPO_EMPLEADO, A.COD_PERSONA, A.LEGADO, A.EXISTE AS ODI, B.EXISTE AS CA  from CLR_COMPENSATORIO  A LEFT JOIN CLR_COMPENSATORIO_H  B ON A.DOCUMENTO = B.DOCUMENTO;
+      else if id_transaccion = 3 then
+      OPEN cursor_usuarios FOR
+      select * from CLR_ODI_CA where EMPLOYEE_NUMBER = documentousuario ;
+      end if;
+      end if;
+  end if;
+END;
+--------------------------------------------------------------------------------------------------------------
+create or replace 
+PROCEDURE ACTUALIZAR_ESTADO_X_TRANSACCION (id_transaccion integer, documentousuario in varchar2, transaccion_idm in varchar2)
+AS
+BEGIN
+ if id_transaccion = 1 then
+     UPDATE clr_compensatorio SET fase = '1',ESTADO_USUARIO = 'Retirado' WHERE documento = documentousuario;
+      else if id_transaccion = 2 then
+      UPDATE clr_compensatorio SET fase = '1',ESTADO_USUARIO = 'Inactivo' WHERE documento = documentousuario;
+      else if id_transaccion = 3 then
+      UPDATE clr_compensatorio SET fase = '1',ESTADO_USUARIO = 'Pendiente' WHERE documento = documentousuario;
+      else if id_transaccion = 4 then
+      UPDATE clr_compensatorio SET fase = '1',ESTADO_USUARIO = 'Migrado' WHERE documento = documentousuario;
+       else if id_transaccion = 5 then
+      UPDATE clr_compensatorio_h SET estado = '2', fecha_registro = sysdate,  fecha_procesamiento = sysdate, desc_causa = 'Se negó la transacción debido a que el usuario se encuentra en estado Retirado en CA y el evento no es una Contratación o Recontratación.', fecha_lote = sysdate, cod_transaccion = 'N/A' WHERE documento = documentousuario;
+       else if id_transaccion = 6 then
+      UPDATE clr_compensatorio_h SET estado = '2', fecha_registro = sysdate,  fecha_procesamiento = sysdate, desc_causa = 'Se negó la transacción debido a que el usuario se encuentra en estado Inactivo en CA y el evento no es una Contratación o Recontratación.', fecha_lote = sysdate, cod_transaccion = 'N/A' WHERE documento = documentousuario;
+      else if id_transaccion = 7 then
+      UPDATE clr_compensatorio_h SET estado = '2', fecha_registro = sysdate,  fecha_procesamiento = sysdate, desc_causa = 'Se negó la transacción debido a que el usuario se encuentra en estado Pendiente en CA y el evento no es una Contratación o Recontratación.', fecha_lote = sysdate, cod_transaccion = 'N/A' WHERE documento = documentousuario;
+      else if id_transaccion = 8 then
+      UPDATE clr_compensatorio_h SET estado = '2', fecha_registro = sysdate,  fecha_procesamiento = sysdate, desc_causa = 'Usuario en proceso de Migración.', fecha_lote = sysdate, cod_transaccion = 'N/A' WHERE documento = documentousuario;
+      else if id_transaccion = 8 then
+      UPDATE clr_compensatorio_h SET estado = '1', fecha_registro = sysdate,  fecha_procesamiento = sysdate, desc_causa = 'FALLO SINCRONIZACION PORTAL', fecha_lote = sysdate, cod_transaccion = transaccion_idm WHERE documento = documentousuario;
+      else if id_transaccion = 8 then
+      UPDATE clr_compensatorio_h SET estado = '4', fecha_registro = sysdate,  fecha_procesamiento = sysdate, desc_causa = 'SINCRONIZACION PORTAL', fecha_lote = sysdate, cod_transaccion = transaccion_idm WHERE documento =  documentousuario;
+      end if;
+      end if;
+      end if;
+      end if;
+      end if;
+      END IF;
+      end if;
+      end if;
+      end if;
+  end if;
+END;
+---------------------------------------------------------------------------------------------------------------------------------
+select * from clr_compensatorio WHERE documento = '1000470622'; 
+---------------------------------------------------------------------------------------------------------------------------------
+create or replace 
+PROCEDURE INSERT_HISTORICO_X_TRANSACCION (id_transaccion integer, documentousuario in varchar2)
+AS
+BEGIN
+ if id_transaccion = 1 then
+     Insert into clr_compensatorio_h (ID_LOTE,DOCUMENTO,TIPO_EMPLEADO,COD_PERSONA,LEGADO) SELECT ID_LOTE,DOCUMENTO,TIPO_EMPLEADO,COD_PERSONA,LEGADO from clr_compensatorio where  DOCUMENTO = documentousuario;
+      end if;
+END;
+
+
+
+
+
