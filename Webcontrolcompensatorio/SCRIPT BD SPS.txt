@@ -196,6 +196,32 @@ BEGIN
 END;
 
 
-
+---------------------------SP FINAL CONSULTAS---------------------------------------------------------------------------------------
+create or replace 
+PROCEDURE SP_CLR_PRIMARIO_KPIS (id_transaccion integer, documentousuario in varchar2, id_lote in varchar2, cod_persona in varchar2,  cursor_usuarios out SYS_REFCURSOR)
+AS
+BEGIN
+  if id_transaccion = 1 then
+    OPEN cursor_usuarios FOR
+     select * from clr_compensatorio_h where documento = documentousuario;
+      else if id_transaccion = 2 then
+      OPEN cursor_usuarios FOR
+      select * from clr_compensatorio_h where id_lote = id_lote;
+      else if id_transaccion = 3 then
+      OPEN cursor_usuarios FOR
+      select * from clr_compensatorio_h where cod_persona = cod_persona;
+      else if id_transaccion = 4 then
+      OPEN cursor_usuarios FOR
+      select * from clr_compensatorio_h;
+      else if id_transaccion = 5 then
+      OPEN cursor_usuarios FOR
+      select * from clr_odi_ca;
+      end if;
+      end if;
+      end if;
+      end if;
+  end if;
+END;
+-------------------------------------------------------------------------------------------------------------------------------------------
 
 
