@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>JavaScript Donut Chart</title>
+        <script src="https://cdn.anychart.com/releases/8.11.1/js/anychart-core.min.js"></script>
+        <script src="https://cdn.anychart.com/releases/8.11.1/js/anychart-pie.min.js"></script>
+        <style type="text/css">      
+            html, body, #container { 
+                width: 100%; height: 100%; margin: 0; padding: 0; 
+            } 
+        </style>
+    </head>
+    <body>  
+        <div id="container"></div>
+        <script>
+            anychart.onDocumentReady(function () {
+                // add the data
+                var data = anychart.data.set([
+                    ["Wimbledon", 8],
+                    ["Australian Open", 6],
+                    ["U.S. Open", 5],
+                    ["U.S. Open", 5],
+                    ["French Open", 9]
+                ]);
+                // create a color palette
+                var palette = anychart.palettes.distinctColors();
+                // add the colors according to the brands
+                palette.items([
+                    {color: "#563783"},
+                    {color: "#563783"},
+                    {color: "#1b8cca"},
+                    {color: "#022789"},
+                    {color: "# #ff2d00 "}
+                ]);
+                // create a pie chart instance with the passed data
+                var chart = anychart
+                        .pie(data)
+                        // set the inner radius to make a donut chart
+                        .innerRadius("50%")
+                        // set the color palette
+                        .palette(palette);
+                // set the position of the labels
+                chart.labels().format("{%x}: {%y}").fontSize(14);
+                // disable the legend
+                chart.legend(false);
+                // set the fill when selected
+                chart.selected().fill("#007247");
+                // customize the outline when selected
+                chart
+                        .selected()
+                        .outline()
+                        .fill(function () {
+                            return anychart.color.lighten("#007247", 0.55);
+                        });
+                // create a standalone label
+                var label = anychart.standalones.label();
+                label
+                        .useHtml(true)
+                        .text(
+                                '<span style = "color: #313136; font-size:18px;">Total titles: 20</span>' +
+                                '<br><br><span style = "color: #313136; font-size:18px;">Total finals: 122</span>'
+                                )
+                        .position("center")
+                        .anchor("center")
+                        .hAlign("center")
+                        .vAlign("middle");
+                label.width("100%");
+                label.height("100%");
+                // set the label as the center content
+                chart.center().content(label);
+                // format the tooltip
+                chart.tooltip().format("Percent of total wins: {%PercentValue}%");
+                // set the chart title
+                chart
+                        .title()
+                        .enabled(true)
+                        .useHtml(true)
+                        .text(
+                                '<span style = "color: #111; font-size:20px; margin-bottom:10px; dy:20px">Grand Slam Titles Won by Roger Federer</span>' +
+                                '<br/><span style="color:#007247; font-size: 15px;">The French Open (Roland-Garros) is apparently his least favorite major</span>'
+                                );
+                // set the container id for the chart
+                chart.container("container");
+                // draw the resulting chart
+                chart.draw();
+            });
+        </script>
+    </body>
+</html>
